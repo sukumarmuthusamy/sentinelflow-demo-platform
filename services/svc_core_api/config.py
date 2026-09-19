@@ -6,4 +6,5 @@ from __future__ import annotations
 ADJUDICATION_TIMEOUT_SECONDS = 30
 
 # Idempotency window for duplicate claim detection.
+# Claims with the same correlation_id within this window are rejected.
 IDEMPOTENCY_WINDOW_HOURS = 24
