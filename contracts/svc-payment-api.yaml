@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   title: svc-payment-api contract
-  version: 3.0.0
-  x-effective-date: '2025-10-20'
+  version: 3.1.0
+  x-effective-date: '2026-01-15'
   description: Synthetic OpenAPI contract for svc-payment-api.
 paths:
   /v1/payment-api/health:
@@ -23,10 +23,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CheckoutRequest'
       responses:
-        '202':
-          description: Accepted
-        '409':
-          description: Idempotency conflict
+        '200':
+          description: Captured immediately
 components:
   schemas:
     CheckoutRequest:
