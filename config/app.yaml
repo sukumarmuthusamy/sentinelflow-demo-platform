@@ -1,0 +1,14 @@
+platform:
+  name: sentinelflow-demo-platform
+  environment: demo
+  domains:
+    - healthcare-claims
+    - ecommerce-payments
+
+logging:
+  level: INFO
+  format: json
+
+features:
+  enable_analytics_ingest: true
+  enable_notification_dispatch: true
