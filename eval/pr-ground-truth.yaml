@@ -1,0 +1,255 @@
+# Ground-truth labels for SentinelFlow live-mode evaluation.
+# PR numbers are assigned after running scripts/create_demo_prs.ps1 on GitHub.
+# Branch names are the stable identifiers until PRs are created.
+
+schema_version: "1.0"
+repo_purpose: sentinelflow-live-demo-data-source
+baseline_branch: main
+sentinelflow_reference: ../sentinelflow-release-intelligence/SENTINELFLOW_PLAN.md
+
+summary:
+  total_scenarios: 18
+  expected_pass: 6
+  expected_block: 6
+  expected_review: 6
+
+scenarios:
+  - id: DEMO-001
+    branch: pr/001-docs-analytics
+    pr_number: null
+    title: "docs: expand analytics documentation"
+    category: documentation
+    primary_service: svc-analytics
+    changed_files:
+      - analytics_docs/readme.py
+    expected_verdict: PASS
+    reasoning: >
+      Documentation-only change in a non-code path. Minimal blast radius,
+      no contract or security surface touched. Mirrors CHG-H001.
+
+  - id: DEMO-002
+    branch: pr/002-docs-inventory
+    pr_number: null
+    title: "docs: add inventory reservation troubleshooting section"
+    category: documentation
+    primary_service: svc-inventory
+    changed_files:
+      - docs/inventory-guide.md
+    expected_verdict: PASS
+    reasoning: >
+      Markdown-only update with no code, contract, or dependency changes.
+      Mirrors CHG-E001.
+
+  - id: DEMO-003
+    branch: pr/003-notification-logging
+    pr_number: null
+    title: "feat(notification): add structured dispatch logging with tests"
+    category: feature
+    primary_service: svc-notification
+    changed_files:
+      - services/svc_notification/dispatch.py
+      - tests/test_notification.py
+    expected_verdict: PASS
+    reasoning: >
+      Low-risk logging addition with matching test coverage. Single-service
+      change, no contract break, no secrets.
+
+  - id: DEMO-004
+    branch: pr/004-order-events-metrics
+    pr_number: null
+    title: "feat(order-events): expose published event counter with tests"
+    category: feature
+    primary_service: svc-order-events
+    changed_files:
+      - services/svc_order_events/publish.py
+      - tests/test_order_events.py
+    expected_verdict: PASS
+    reasoning: >
+      Internal metrics counter with full test updates. Medium-criticality
+      service but adequate regression coverage for blast radius.
+
+  - id: DEMO-005
+    branch: pr/005-analytics-refactor
+    pr_number: null
+    title: "refactor(analytics): extract payload validation helper with tests"
+    category: refactor
+    primary_service: svc-analytics
+    changed_files:
+      - services/svc_analytics/ingest.py
+      - tests/test_analytics.py
+    expected_verdict: PASS
+    reasoning: >
+      Internal refactor with tests updated. Downstream consumers unaffected
+      at contract level; import graph change is localized.
+
+  - id: DEMO-006
+    branch: pr/006-core-api-config-comment
+    pr_number: null
+    title: "chore(core-api): document idempotency window in config"
+    category: documentation
+    primary_service: svc-core-api
+    changed_files:
+      - services/svc_core_api/config.py
+    expected_verdict: PASS
+    reasoning: >
+      Comment-only change on critical service. No behavioral, contract,
+      or security impact. Existing tests remain valid.
+
+  - id: DEMO-007
+    branch: pr/007-breaking-core-api-contract
+    pr_number: null
+    title: "feat(core-api)!: remove required member_id from claim submit contract"
+    category: api_contract
+    primary_service: svc-core-api
+    changed_files:
+      - contracts/svc-core-api.yaml
+    expected_verdict: BLOCK
+    reasoning: >
+      Breaking OpenAPI change on critical svc-core-api: removes required
+      field member_id. oasdiff should emit ERR. Mirrors CHG-H002.
+
+  - id: DEMO-008
+    branch: pr/008-breaking-payment-api-contract
+    pr_number: null
+    title: "feat(payment-api)!: change checkout response from 202 to 200"
+    category: api_contract
+    primary_service: svc-payment-api
+    changed_files:
+      - contracts/svc-payment-api.yaml
+    expected_verdict: BLOCK
+    reasoning: >
+      Breaking response code change on critical svc-payment-api checkout
+      endpoint. Mirrors CHG-E002.
+
+  - id: DEMO-009
+    branch: pr/009-breaking-notification-contract
+    pr_number: null
+    title: "feat(notification)!: rename dispatch operationId breaking clients"
+    category: api_contract
+    primary_service: svc-notification
+    changed_files:
+      - contracts/svc-notification.yaml
+    expected_verdict: BLOCK
+    reasoning: >
+      operationId rename breaks API clients. High-criticality notification
+      path; contract diff should surface breaking change.
+
+  - id: DEMO-010
+    branch: pr/010-aws-secret-core-api
+    pr_number: null
+    title: "chore(core-api): add AWS credentials for demo migration"
+    category: auth_security
+    primary_service: svc-core-api
+    changed_files:
+      - services/svc_core_api/config.py
+    expected_verdict: BLOCK
+    reasoning: >
+      Synthetic AWS access key pattern (AKIA...) in critical service config.
+      gitleaks should flag verified secret. Mirrors CHG-H003.
+
+  - id: DEMO-011
+    branch: pr/011-github-token-payment
+    pr_number: null
+    title: "chore(payment-api): add processor API token for sandbox"
+    category: auth_security
+    primary_service: svc-payment-api
+    changed_files:
+      - services/svc_payment_api/config.py
+    expected_verdict: BLOCK
+    reasoning: >
+      Synthetic GitHub/ghp token in pci-adjacent critical payment service.
+      Security scanner should block.
+
+  - id: DEMO-012
+    branch: pr/012-private-key-notification
+    pr_number: null
+    title: "chore(notification): add signing key for webhook verification"
+    category: auth_security
+    primary_service: svc-notification
+    changed_files:
+      - services/svc_notification/signing.py
+    expected_verdict: BLOCK
+    reasoning: >
+      RSA private key block embedded in source. gitleaks private-key rule
+      should trigger BLOCK on high-criticality notification service.
+
+  - id: DEMO-013
+    branch: pr/013-core-api-adjudication-logic
+    pr_number: null
+    title: "feat(core-api): add adjudication timeout enforcement without tests"
+    category: feature
+    primary_service: svc-core-api
+    changed_files:
+      - services/svc_core_api/claims.py
+    expected_verdict: REVIEW
+    reasoning: >
+      Significant logic change on critical svc-core-api affecting downstream
+      notification and analytics via imports, with no new tests. High blast
+      radius + inadequate test coverage.
+
+  - id: DEMO-014
+    branch: pr/014-cross-service-analytics-change
+    pr_number: null
+    title: "feat(analytics): change event schema consumed by notification templates"
+    category: feature
+    primary_service: svc-analytics
+    changed_files:
+      - services/svc_analytics/ingest.py
+      - services/svc_notification/dispatch.py
+    expected_verdict: REVIEW
+    reasoning: >
+      Cross-service schema change spanning analytics and notification with
+      no test updates. Blast radius reaches multiple services.
+
+  - id: DEMO-015
+    branch: pr/015-payment-capture-flow
+    pr_number: null
+    title: "feat(payment-api): add partial capture path with minimal test updates"
+    category: feature
+    primary_service: svc-payment-api
+    changed_files:
+      - services/svc_payment_api/checkout.py
+    expected_verdict: REVIEW
+    reasoning: >
+      Payment flow change on critical svc-payment-api touching inventory
+      and order-events downstream. No test updates for new partial_capture
+      path.
+
+  - id: DEMO-016
+    branch: pr/016-order-events-schema-change
+    pr_number: null
+    title: "feat(order-events): add order.refunded event type without contract/test sync"
+    category: feature
+    primary_service: svc-order-events
+    changed_files:
+      - services/svc_order_events/publish.py
+    expected_verdict: REVIEW
+    reasoning: >
+      Event schema expanded in code but OpenAPI contract and tests not
+      updated. Internal/external contract drift warrants human review.
+
+  - id: DEMO-017
+    branch: pr/017-notification-retry-logic
+    pr_number: null
+    title: "feat(notification): implement exponential backoff retries without tests"
+    category: feature
+    primary_service: svc-notification
+    changed_files:
+      - services/svc_notification/dispatch.py
+    expected_verdict: REVIEW
+    reasoning: >
+      Retry/backoff logic change on high-criticality notification path
+      without regression tests. Mirrors CHG-H004 evidence-coverage pattern.
+
+  - id: DEMO-018
+    branch: pr/018-inventory-reservation-change
+    pr_number: null
+    title: "feat(inventory): add soft-reservation TTL without adequate regression tests"
+    category: feature
+    primary_service: svc-inventory
+    changed_files:
+      - services/svc_inventory/reservation.py
+    expected_verdict: REVIEW
+    reasoning: >
+      New soft-reservation code path changes checkout behavior for
+      svc-payment-api consumers. Existing tests cover hard reservation only.
