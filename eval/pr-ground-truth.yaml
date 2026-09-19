@@ -1,6 +1,5 @@
 # Ground-truth labels for SentinelFlow live-mode evaluation.
-# PR numbers are assigned after running scripts/create_demo_prs.ps1 on GitHub.
-# Branch names are the stable identifiers until PRs are created.
+# PR numbers assigned via gh pr list (1:1 with branch prefix: pr/001 -> #1, etc.).
 
 schema_version: "1.0"
 repo_purpose: sentinelflow-live-demo-data-source
@@ -16,7 +15,7 @@ summary:
 scenarios:
   - id: DEMO-001
     branch: pr/001-docs-analytics
-    pr_number: null
+    pr_number: 1
     title: "docs: expand analytics documentation"
     category: documentation
     primary_service: svc-analytics
@@ -29,7 +28,7 @@ scenarios:
 
   - id: DEMO-002
     branch: pr/002-docs-inventory
-    pr_number: null
+    pr_number: 2
     title: "docs: add inventory reservation troubleshooting section"
     category: documentation
     primary_service: svc-inventory
@@ -42,7 +41,7 @@ scenarios:
 
   - id: DEMO-003
     branch: pr/003-notification-logging
-    pr_number: null
+    pr_number: 3
     title: "feat(notification): add structured dispatch logging with tests"
     category: feature
     primary_service: svc-notification
@@ -56,7 +55,7 @@ scenarios:
 
   - id: DEMO-004
     branch: pr/004-order-events-metrics
-    pr_number: null
+    pr_number: 4
     title: "feat(order-events): expose published event counter with tests"
     category: feature
     primary_service: svc-order-events
@@ -70,7 +69,7 @@ scenarios:
 
   - id: DEMO-005
     branch: pr/005-analytics-refactor
-    pr_number: null
+    pr_number: 5
     title: "refactor(analytics): extract payload validation helper with tests"
     category: refactor
     primary_service: svc-analytics
@@ -84,7 +83,7 @@ scenarios:
 
   - id: DEMO-006
     branch: pr/006-core-api-config-comment
-    pr_number: null
+    pr_number: 6
     title: "chore(core-api): document idempotency window in config"
     category: documentation
     primary_service: svc-core-api
@@ -97,7 +96,7 @@ scenarios:
 
   - id: DEMO-007
     branch: pr/007-breaking-core-api-contract
-    pr_number: null
+    pr_number: 7
     title: "feat(core-api)!: remove required member_id from claim submit contract"
     category: api_contract
     primary_service: svc-core-api
@@ -110,7 +109,7 @@ scenarios:
 
   - id: DEMO-008
     branch: pr/008-breaking-payment-api-contract
-    pr_number: null
+    pr_number: 8
     title: "feat(payment-api)!: change checkout response from 202 to 200"
     category: api_contract
     primary_service: svc-payment-api
@@ -123,7 +122,7 @@ scenarios:
 
   - id: DEMO-009
     branch: pr/009-breaking-notification-contract
-    pr_number: null
+    pr_number: 9
     title: "feat(notification)!: rename dispatch operationId breaking clients"
     category: api_contract
     primary_service: svc-notification
@@ -136,7 +135,7 @@ scenarios:
 
   - id: DEMO-010
     branch: pr/010-aws-secret-core-api
-    pr_number: null
+    pr_number: 10
     title: "chore(core-api): add AWS credentials for demo migration"
     category: auth_security
     primary_service: svc-core-api
@@ -149,7 +148,7 @@ scenarios:
 
   - id: DEMO-011
     branch: pr/011-github-token-payment
-    pr_number: null
+    pr_number: 11
     title: "chore(payment-api): add processor API token for sandbox"
     category: auth_security
     primary_service: svc-payment-api
@@ -162,7 +161,7 @@ scenarios:
 
   - id: DEMO-012
     branch: pr/012-private-key-notification
-    pr_number: null
+    pr_number: 12
     title: "chore(notification): add signing key for webhook verification"
     category: auth_security
     primary_service: svc-notification
@@ -175,7 +174,7 @@ scenarios:
 
   - id: DEMO-013
     branch: pr/013-core-api-adjudication-logic
-    pr_number: null
+    pr_number: 13
     title: "feat(core-api): add adjudication timeout enforcement without tests"
     category: feature
     primary_service: svc-core-api
@@ -189,7 +188,7 @@ scenarios:
 
   - id: DEMO-014
     branch: pr/014-cross-service-analytics-change
-    pr_number: null
+    pr_number: 14
     title: "feat(analytics): change event schema consumed by notification templates"
     category: feature
     primary_service: svc-analytics
@@ -203,7 +202,7 @@ scenarios:
 
   - id: DEMO-015
     branch: pr/015-payment-capture-flow
-    pr_number: null
+    pr_number: 15
     title: "feat(payment-api): add partial capture path with minimal test updates"
     category: feature
     primary_service: svc-payment-api
@@ -217,7 +216,7 @@ scenarios:
 
   - id: DEMO-016
     branch: pr/016-order-events-schema-change
-    pr_number: null
+    pr_number: 16
     title: "feat(order-events): add order.refunded event type without contract/test sync"
     category: feature
     primary_service: svc-order-events
@@ -230,7 +229,7 @@ scenarios:
 
   - id: DEMO-017
     branch: pr/017-notification-retry-logic
-    pr_number: null
+    pr_number: 17
     title: "feat(notification): implement exponential backoff retries without tests"
     category: feature
     primary_service: svc-notification
@@ -243,7 +242,7 @@ scenarios:
 
   - id: DEMO-018
     branch: pr/018-inventory-reservation-change
-    pr_number: null
+    pr_number: 18
     title: "feat(inventory): add soft-reservation TTL without adequate regression tests"
     category: feature
     primary_service: svc-inventory
