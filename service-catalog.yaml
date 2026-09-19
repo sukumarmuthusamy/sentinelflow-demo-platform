@@ -1,0 +1,55 @@
+# Synthetic service catalog mirroring SentinelFlow domain packs.
+# healthcare-claims + ecommerce-payments
+
+domains:
+  healthcare-claims:
+    display_name: Healthcare Claims Platform
+    services:
+      - name: svc-core-api
+        criticality: critical
+        data_classification: regulated-adjacent
+        owner: platform-team
+        description: Primary API surface for claims intake and adjudication workflows.
+      - name: svc-notification
+        criticality: high
+        data_classification: internal
+        owner: messaging-team
+        description: Async notification dispatch for claim lifecycle events.
+      - name: svc-analytics
+        criticality: medium
+        data_classification: internal
+        owner: data-team
+        description: Analytics ingestion and reporting for claims metrics.
+
+  ecommerce-payments:
+    display_name: E-Commerce Payments Platform
+    services:
+      - name: svc-payment-api
+        criticality: critical
+        data_classification: pci-adjacent
+        owner: payments-team
+        description: Payment authorization, capture, and refund API.
+      - name: svc-inventory
+        criticality: high
+        data_classification: internal
+        owner: catalog-team
+        description: Inventory reservation and stock level management.
+      - name: svc-order-events
+        criticality: medium
+        data_classification: internal
+        owner: fulfillment-team
+        description: Order event publishing for downstream fulfillment.
+
+dependencies:
+  - source: svc-core-api
+    target: svc-notification
+    kind: publishes_to
+  - source: svc-core-api
+    target: svc-analytics
+    kind: publishes_to
+  - source: svc-payment-api
+    target: svc-inventory
+    kind: calls
+  - source: svc-payment-api
+    target: svc-order-events
+    kind: publishes_to

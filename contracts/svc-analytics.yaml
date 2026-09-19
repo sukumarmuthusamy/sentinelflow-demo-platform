@@ -1,0 +1,42 @@
+openapi: 3.1.0
+info:
+  title: svc-analytics contract
+  version: 2.1.0
+  x-effective-date: '2025-10-15'
+  description: Synthetic OpenAPI contract for svc-analytics.
+paths:
+  /v1/analytics/health:
+    get:
+      operationId: svc-analytics_health
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /v1/analytics/events/ingest:
+    post:
+      operationId: svc-analytics_ingest_event
+      summary: Ingest an analytics event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventIngestRequest'
+      responses:
+        '202':
+          description: Accepted
+components:
+  schemas:
+    EventIngestRequest:
+      type: object
+      required:
+        - correlation_id
+        - event_type
+        - payload
+      properties:
+        correlation_id:
+          type: string
+        event_type:
+          type: string
+        payload:
+          type: object

@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: svc-payment-api contract
+  version: 3.0.0
+  x-effective-date: '2025-10-20'
+  description: Synthetic OpenAPI contract for svc-payment-api.
+paths:
+  /v1/payment-api/health:
+    get:
+      operationId: svc-payment-api_health
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /v1/payment-api/checkout:
+    post:
+      operationId: svc-payment-api_checkout
+      summary: Authorize and capture a checkout payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '202':
+          description: Accepted
+        '409':
+          description: Idempotency conflict
+components:
+  schemas:
+    CheckoutRequest:
+      type: object
+      required:
+        - correlation_id
+        - cart_id
+        - amount_cents
+        - payment_method_token
+      properties:
+        correlation_id:
+          type: string
+        cart_id:
+          type: string
+        amount_cents:
+          type: integer
+        payment_method_token:
+          type: string

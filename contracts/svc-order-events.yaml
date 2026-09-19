@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  title: svc-order-events contract
+  version: 1.2.0
+  x-effective-date: '2025-08-15'
+  description: Synthetic OpenAPI contract for svc-order-events.
+paths:
+  /v1/order-events/health:
+    get:
+      operationId: svc-order-events_health
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /v1/order-events/publish:
+    post:
+      operationId: svc-order-events_publish
+      summary: Publish an order lifecycle event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderEvent'
+      responses:
+        '202':
+          description: Accepted
+components:
+  schemas:
+    OrderEvent:
+      type: object
+      required:
+        - correlation_id
+        - order_id
+        - event_type
+      properties:
+        correlation_id:
+          type: string
+        order_id:
+          type: string
+        event_type:
+          type: string
+          enum:
+            - order.created
+            - order.paid
+            - order.shipped

@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: svc-notification contract
+  version: 2.1.0
+  x-effective-date: '2025-10-15'
+  description: Synthetic OpenAPI contract for svc-notification.
+paths:
+  /v1/notification/health:
+    get:
+      operationId: svc-notification_health
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /v1/notification/dispatch:
+    post:
+      operationId: svc-notification_dispatch
+      summary: Dispatch a notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DispatchRequest'
+      responses:
+        '202':
+          description: Accepted
+        '429':
+          description: Rate limited
+components:
+  schemas:
+    DispatchRequest:
+      type: object
+      required:
+        - correlation_id
+        - channel
+        - recipient
+        - template_id
+      properties:
+        correlation_id:
+          type: string
+        channel:
+          type: string
+          enum:
+            - email
+            - sms
+            - push
+        recipient:
+          type: string
+        template_id:
+          type: string
