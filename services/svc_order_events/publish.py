@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from shared.types import ServiceResult
 
-VALID_EVENT_TYPES = {"order.created", "order.paid", "order.shipped"}
+VALID_EVENT_TYPES = {"order.created", "order.paid", "order.shipped", "order.refunded"}
 
 
 def publish_order_event(
@@ -19,5 +19,5 @@ def publish_order_event(
     return ServiceResult(
         correlation_id=correlation_id,
         status="published",
-        payload={"order_id": order_id, "event_type": event_type},
+        payload={"order_id": order_id, "event_type": event_type, "refund_capable": True},
     )
