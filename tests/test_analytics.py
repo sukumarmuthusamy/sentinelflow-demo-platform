@@ -16,3 +16,8 @@ def test_ingest_event_accepts_valid_payload():
 
 def test_normalize_event_type():
     assert normalize_event_type(" Claim Submitted ") == "claim_submitted"
+
+
+def test_ingest_event_rejects_empty_event_type():
+    result = ingest_event("corr-a2", "", {"count": 1})
+    assert result.status == "missing_event_type"
