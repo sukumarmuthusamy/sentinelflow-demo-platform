@@ -18,3 +18,9 @@ def test_dispatch_notification_queues_valid_request():
 def test_dispatch_notification_rejects_invalid_channel():
     result = dispatch_notification("corr-n2", "fax", "user@example.invalid", "tpl-1")
     assert result.status == "invalid_channel"
+
+
+def test_dispatch_notification_accepts_push_channel():
+    result = dispatch_notification("corr-n3", "push", "device-1", "tpl-push")
+    assert result.status == "queued"
+    assert result.payload["channel"] == "push"
