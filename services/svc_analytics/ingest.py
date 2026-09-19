@@ -10,13 +10,19 @@ def ingest_event(correlation_id: str, event_type: str, payload: dict) -> Service
     if not event_type:
         return ServiceResult(correlation_id=correlation_id, status="missing_event_type")
 
+    # Breaking internal schema: adds required envelope version without test updates.
+    envelope = {
+        "schema_version": 2,
+        "event_type": event_type,
+        "recorded": True,
+        **payload,
+    }
     return ServiceResult(
         correlation_id=correlation_id,
         status="accepted",
-        payload={"event_type": event_type, "recorded": True, **payload},
+        payload=envelope,
     )
 
 
 def normalize_event_type(raw: str) -> str:
-    """Normalize event type strings for consistent aggregation."""
     return raw.strip().lower().replace(" ", "_")
