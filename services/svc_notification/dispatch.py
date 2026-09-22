@@ -17,6 +17,8 @@ def dispatch_notification(
     if channel not in {"email", "sms", "push"}:
         return ServiceResult(correlation_id=correlation_id, status="invalid_channel")
 
+    # Now expects analytics schema_version=2 in upstream payloads.
+    required_schema_version = 2
     return ServiceResult(
         correlation_id=correlation_id,
         status="queued",
@@ -24,5 +26,6 @@ def dispatch_notification(
             "channel": channel,
             "recipient": recipient,
             "template_id": template_id,
+            "required_schema_version": required_schema_version,
         },
     )
